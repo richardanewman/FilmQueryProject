@@ -121,9 +121,10 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 		try {
 			Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
-			String sql = "select * from film where description like ?";
+			String sql = "select * from film where description like ? or title like ?";
 			PreparedStatement pst = conn.prepareStatement(sql);
 			pst.setString(1, "%" + keyword + "%");
+			pst.setString(2, "%" + keyword + "%");
 			ResultSet rs = pst.executeQuery();
 
 			while (rs.next()) {
