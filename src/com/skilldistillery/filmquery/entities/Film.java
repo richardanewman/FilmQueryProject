@@ -2,6 +2,8 @@ package com.skilldistillery.filmquery.entities;
 
 import java.util.List;
 
+import com.skilldistillery.filmquery.database.DatabaseAccessorObject;
+
 public class Film {
 	
 	private int id;
@@ -123,6 +125,47 @@ public class Film {
 
 	public Film() {
 		super();
+	}
+
+	public Film(int id, String title, String description, Integer releaseYear, int languageId, int rentalDuration, int length,
+			double replacementCost, String rating, String specialFeatures) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.description = description;
+		this.releaseYear = releaseYear;
+		this.languageId = languageId;
+		this.rentalDuration = rentalDuration;
+		this.length = length;
+		this.replacementCost = replacementCost;
+		this.rating = rating;
+		this.specialFeatures = specialFeatures;
+		
+	}
+	
+	public String filmDisplay() {
+		DatabaseAccessorObject db = new DatabaseAccessorObject();
+		StringBuilder builder = new StringBuilder();
+		builder.append("\n");
+		builder.append(title);
+		builder.append(", Released in ");
+		builder.append(releaseYear);
+		builder.append(", with a rating of ");
+		builder.append(rating);
+		builder.append("\nFilm description: ");
+		builder.append(description);
+		builder.append("\nFilm language: ");
+		builder.append(db.getLanguage(languageId).toString());
+		builder.append("\nFilm cast: ");
+		for (int i = 0; i < actors.size(); i++) {
+			builder.append(actors.get(i));
+			if (i < actors.size() - 1) {
+				builder.append(", ");
+			}
+			
+		}
+		return builder.toString();
+		
 	}
 
 	@Override
