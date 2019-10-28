@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.skilldistillery.filmquery.entities.Actor;
+import com.skilldistillery.filmquery.entities.Category;
 import com.skilldistillery.filmquery.entities.Film;
 import com.skilldistillery.filmquery.entities.Language;
 
@@ -49,8 +50,9 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				int length = rs.getInt("length");
 				double repCost = rs.getDouble("replacement_cost");
 				String features = rs.getString("special_features");
+				Category category = getCategory(id);
 				List<Actor> actors = findActorsByFilmId(filmId);
-				film = new Film(id, title, desc, releaseYear, langId, rentDur, length, repCost, rating, features, actors);
+				film = new Film(id, title, desc, releaseYear, langId, rentDur, length, repCost, rating, features, category, actors);
 			}
 			rs.close();
 			pst.close();
@@ -135,8 +137,9 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				double repCost = rs.getDouble("replacement_cost");
 				String rating = rs.getString("rating");
 				String features = rs.getString("special_features");
+				Category category = getCategory(id);
 				List<Actor> actors = findActorsByFilmId(id);
-				film = new Film(id, title, desc, releaseYear, langId, rentDur, length, repCost, rating, features, actors);
+				film = new Film(id, title, desc, releaseYear, langId, rentDur, length, repCost, rating, features, category, actors);
 				films.add(film);
 			}
 			rs.close();
@@ -170,5 +173,29 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			e.printStackTrace();
 		}
 		return lang;
+	}
+
+	@Override
+	public Category getCategory(int categoryId) {
+		Category cat = null;
+
+		try {
+			Connection conn = DriverManager.getConnection(URL, USER, PASSWORD);
+			String sql = "select category.name from category join film_category on film_category.category_id = category.id where film_category.film_id = ?";
+			PreparedStatement pst = conn.prepareStatement(sql);
+			pst.setInt(1, categoryId);
+			ResultSet rs = pst.executeQuery();
+
+			if (rs.next()) {
+				String name = rs.getString("name");
+				cat = new Category(name);
+			}
+			rs.close();
+			pst.close();
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return cat;
 	}
 }

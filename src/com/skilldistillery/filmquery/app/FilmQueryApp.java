@@ -15,14 +15,9 @@ public class FilmQueryApp {
 
 	public static void main(String[] args) {
 		FilmQueryApp app = new FilmQueryApp();
-//    app.test();
 		app.launch();
 	}
 
-//  private void test() {
-//    Film film = db.findFilmById(1);
-//    System.out.println(film);
-//  }
 
 	private void launch() {
 		Scanner input = new Scanner(System.in);
@@ -39,6 +34,7 @@ public class FilmQueryApp {
 
 		System.out.println("Welcome to the Film Query Database");
 		while (flag) {
+			System.out.println("\n****************** MAIN MENU ******************");
 			System.out.println("\nEnter 1 to look up a film by its ID number.");
 			System.out.println("Enter 2 to search for a film by a keyword.");
 			System.out.println("Enter 3 to exit the application.");
@@ -57,9 +53,16 @@ public class FilmQueryApp {
 				film = db.findFilmById(input.nextInt());
 				if (film == null) {
 					System.out.println("We did not find a matching film with that ID number.");
-					System.out.println("Please try another film ID.");
+					System.out.println("Please try again.");
 				} else {
 					System.out.println(film.filmDisplay());
+					System.out.println("\nEnter 1 to return to main menu.");
+					System.out.println("Enter 2 to see film's full details.");
+					int submenu = input.nextInt();
+					switch (submenu) {
+					case 1: continue;
+					case 2: System.out.println(film.toString());
+					}
 				}
 				break;
 			case 2:
@@ -67,11 +70,19 @@ public class FilmQueryApp {
 				films = db.findFilmBySearch(input.next());
 				if (films.isEmpty()) {
 					System.out.println("We did not find a matching film with that keyword.");
-					System.out.println("Please try another keyword.");
+					System.out.println("Please try again.");
 				} else {
 					for (Film f : films) {
 						System.out.println(f.filmDisplay());
 					}
+					System.out.println("\nEnter 1 to return to main menu.");
+					System.out.println("Enter 2 to see film's full details.");
+					int submenu = input.nextInt();
+					switch (submenu) {
+					case 1: continue;
+					case 2: System.out.println(films.toString());
+					}
+					
 				}
 				break;
 			case 3:

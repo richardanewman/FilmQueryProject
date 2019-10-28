@@ -16,6 +16,7 @@ public class Film {
 	private double replacementCost;
 	private String rating;
 	private String specialFeatures;
+	private Category category;
 	private List<Actor> actors;
 	
 	public int getId() {
@@ -107,6 +108,14 @@ public class Film {
 		this.actors = actors;
 	}
 
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
 	public Film(int id, String title, String description, Integer releaseYear, int languageId, int rentalDuration,
 			int length, double replacementCost, String rating, String specialFeatures, List<Actor> actors) {
 		super();
@@ -143,6 +152,24 @@ public class Film {
 		
 	}
 	
+	public Film(int id, String title, String description, Integer releaseYear, int languageId, int rentalDuration, int length,
+			double replacementCost, String rating, String specialFeatures, Category category, List<Actor> actors) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.description = description;
+		this.releaseYear = releaseYear;
+		this.languageId = languageId;
+		this.rentalDuration = rentalDuration;
+		this.length = length;
+		this.replacementCost = replacementCost;
+		this.rating = rating;
+		this.specialFeatures = specialFeatures;
+		this.category = category;
+		this.actors = actors;
+		
+	}
+
 	public String filmDisplay() {
 		DatabaseAccessorObject db = new DatabaseAccessorObject();
 		StringBuilder builder = new StringBuilder();
@@ -156,6 +183,44 @@ public class Film {
 		builder.append(description);
 		builder.append("\nFilm language: ");
 		builder.append(db.getLanguage(languageId).toString());
+		builder.append("\nFilm category: ");
+		builder.append(db.getCategory(id));
+		builder.append("\nFilm cast: ");
+		for (int i = 0; i < actors.size(); i++) {
+			builder.append(actors.get(i));
+			if (i < actors.size() - 1) {
+				builder.append(", ");
+			}
+		}
+		return builder.toString();
+		
+	}
+
+	@Override
+	public String toString() {
+		DatabaseAccessorObject db = new DatabaseAccessorObject();
+		StringBuilder builder = new StringBuilder();
+		builder.append("\n");
+		builder.append("\nFilm ID: ");
+		builder.append(id);
+		builder.append("\nTitle: ");
+		builder.append(title);
+		builder.append("\nDescription: ");
+		builder.append(description);
+		builder.append("\nRelease Year: ");
+		builder.append(releaseYear);
+		builder.append("\nLanguage: ");
+		builder.append(db.getLanguage(languageId));
+		builder.append("\nRental Duration: ");
+		builder.append(rentalDuration);
+		builder.append("\nLength: ");
+		builder.append(length);
+		builder.append("\nReplacement Cost: ");
+		builder.append(replacementCost);
+		builder.append("\nRating: ");
+		builder.append(rating);
+		builder.append("\nSpecial Features: ");
+		builder.append(specialFeatures);
 		builder.append("\nFilm cast: ");
 		for (int i = 0; i < actors.size(); i++) {
 			builder.append(actors.get(i));
@@ -166,35 +231,6 @@ public class Film {
 		}
 		return builder.toString();
 		
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Film [id=");
-		builder.append(id);
-		builder.append(", title=");
-		builder.append(title);
-		builder.append(", description=");
-		builder.append(description);
-		builder.append(", releaseYear=");
-		builder.append(releaseYear);
-		builder.append(", languageId=");
-		builder.append(languageId);
-		builder.append(", rentalDuration=");
-		builder.append(rentalDuration);
-		builder.append(", length=");
-		builder.append(length);
-		builder.append(", replacementCost=");
-		builder.append(replacementCost);
-		builder.append(", rating=");
-		builder.append(rating);
-		builder.append(", specialFeatures=");
-		builder.append(specialFeatures);
-		builder.append(", actors=");
-		builder.append(actors);
-		builder.append("]");
-		return builder.toString();
 	}
 
 	@Override
